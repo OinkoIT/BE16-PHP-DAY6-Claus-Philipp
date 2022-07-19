@@ -41,7 +41,7 @@ if (isset($_POST['btn-login'])) {
     // if there's no error, continue to login
     if (!$error) {
 
-        $password = hash('sha256', $pass); // password hashing
+        $password = hash('sha256', $pass); // password hashing hash('sha256', $pass)
 
         $sql = "SELECT id, first_name, password, status FROM users WHERE email = '$email'";
         $result = mysqli_query($connect, $sql);

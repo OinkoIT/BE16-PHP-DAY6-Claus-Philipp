@@ -17,6 +17,48 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
 $res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['user']);
 $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
 
+if (mysqli_num_rows($result) == 1) {
+    $data = mysqli_fetch_assoc($result);
+    $name = $data['name'];
+    $price = $data['price'];
+    $picture = $data['picture'];
+    $supplier = $data['fk_supplierId'];
+    $resultSup = mysqli_query($connect, "SELECT * FROM suppliers");
+    $supList = "";
+    if (mysqli_num_rows($resultSup) > 0) {
+        while ($row = $resultSup->fetch_array(MYSQLI_ASSOC)) {
+            if ($row['supplierId'] == $supplier) {
+                $supList .= "<option selected value='{$row['supplierId']}'>{$row['sup_name']}</option>";
+            } else {
+                $supList .= "<option value='{$row['supplierId']}'>{$row['sup_name']}</option>";
+            }
+        }
+    } else {
+        $supList = "<li>There are no suppliers registered</li>";
+    }
+} else {
+    header("location: error.php");
+}
+
+
+
+$sql = "SELECT * FROM products";
+$result = mysqli_query($connect, $sql);
+$tbody = ''; //this variable will hold the body for the table
+if (mysqli_num_rows($result)  > 0) {
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $tbody .= "<tr>
+            <td><img class='img-thumbnail' src='../pictures/" . $row['picture'] . "'</td>
+            <td>" . $row['name'] . "</td>
+            <td>" . $row['price'] . "</td>
+            <td><a href='update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
+            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm' type='button'>Delete</button></a></td>
+            </tr>";
+    };
+} else {
+    $tbody =  "<tr><td colspan='5'><center>No Data Available </center></td></tr>";
+}
+
 mysqli_close($connect);
 ?>
 
@@ -49,6 +91,29 @@ mysqli_close($connect);
         </div>
         <a href="logout.php?logout">Sign Out</a>
         <a href="update.php?id=<?php echo $_SESSION['user'] ?>">Update your profile</a>
+    </div>
+
+    <div class="container">
+        <div class="manageProduct w-75 mt-3">
+            <div class='mb-3'>
+                <a href="create.php"><button class='btn btn-primary' type="button">Add product</button></a>
+                <a href="../dashboard.php"><button class='btn btn-success' type="button">Dashboard</button></a>
+            </div>
+            <p class='h2'>Products</p>
+            <table class='table table-striped'>
+                <thead class='table-success'>
+                    <tr>
+                        <th>Picture</th>
+                        <th>Name</th>
+                        <th>price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?= $tbody; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>

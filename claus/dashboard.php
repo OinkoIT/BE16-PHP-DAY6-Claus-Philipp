@@ -15,10 +15,15 @@ if (isset($_SESSION["user"])) {
 $id = $_SESSION['adm'];
 $status = 'adm';
 $sql = "SELECT * FROM users WHERE status != '$status'";
+$sql2 = "SELECT * FROM users WHERE status = '$status'";
 $result = mysqli_query($connect, $sql);
+$result2 = mysqli_query($connect, $sql2);
 
 //this variable will hold the body for the table
 $tbody = '';
+$abody = '';
+$bbody = '';
+
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
         $tbody .= "<tr>
@@ -33,6 +38,16 @@ if ($result->num_rows > 0) {
 } else {
     $tbody = "<tr><td colspan='5'><center>No Data Available </center></td></tr>";
 }
+
+if ($result2->num_rows > 0) {
+    while ($row = $result2->fetch_array(MYSQLI_ASSOC)) {
+        $abody = $row['picture'];
+        $bbody = $row['first_name'] . " " . $row['last_name'];
+    }
+} else {
+    $abody = "<tr><td colspan='5'><center>No Data Available </center></td></tr>";
+}
+
 
 mysqli_close($connect);
 ?>
@@ -71,8 +86,8 @@ mysqli_close($connect);
     <div class="container">
         <div class="row">
             <div class="col-2">
-                <img class="userImage" src="pictures/admavatar.png" alt="Adm avatar">
-                <p class="">Administrator</p>
+                <img class="userImage shadow" src="pictures/<?php echo $abody ?>" alt="Adm avatar">
+                <p class="">Hello <?php echo $bbody ?></p>
                 <a class="btn btn-success" href="products/index.php">Products</a>
                 <a class="btn btn-danger" href="logout.php?logout">Sign Out</a>
             </div>
