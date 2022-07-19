@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-if (isset($_SESSION['user']) != "") {
-    header("Location: ../../home.php");
-    exit;
-}
+// if (isset($_SESSION['user']) != "") {
+//     header("Location: ../../home.php");
+//     exit;
+// }
 
 if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
     header("Location: ../../index.php");
@@ -14,33 +14,31 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
 require_once '../../components/db_connect.php';
 require_once '../../components/file_upload.php';
 
-if ($_POST) {
-    $name = $_POST['name'];
-    $price = $_POST['price'];
-    $supplier = $_POST['supplier'];
-    $uploadError = '';
-    //this function exists in the service file upload.
-    $picture = file_upload($_FILES['picture'], 'product');
+$res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['user']);
+$row = mysqli_fetch_array($res, MYSQLI_ASSOC);
+$user = $row['id'];
+$username = $row['first_name'];
 
-    if ($supplier == 'none') {
-        //checks if the supplier is undefined and insert null in the DB
-        $sql = "INSERT INTO products (name, price, picture, fk_supplierId) VALUES ('$name', $price, '$picture->fileName', null)";
-    } else {
-        $sql = "INSERT INTO products (name, price, picture, fk_supplierId) VALUES ('$name', $price, '$picture->fileName', $supplier)";
-    }
+
+if ($_GET) {
+    $product = $_GET['id'];
+    $sql = "INSERT INTO `order`(`fk_user_id`, `fk_product_id`) VALUES ('$user','$product')";
+    $sql2 = mysqli_query($connect, "SELECT * FROM products WHERE id=$product");
+
 
     if (mysqli_query($connect, $sql) === true) {
+        $row2 = mysqli_fetch_array($sql2, MYSQLI_ASSOC);
+        $prodname = $row2['name'];
         $class = "success";
-        $message = "The entry below was successfully created <br>
+        $message = "Your order has been placed <br>
             <table class='table w-50'><tr>
-            <td> $name </td>
-            <td> $price </td>
+            <td> User: $username </td>
+            <td> Dish: $prodname </td>
             </tr></table><hr>";
-        $uploadError = ($picture->error != 0) ? $picture->ErrorMessage : '';
     } else {
         $class = "danger";
-        $message = "Error while creating record. Try again: <br>" . $connect->error;
-        $uploadError = ($picture->error != 0) ? $picture->ErrorMessage : '';
+        $message = "Error while ordering. Try again: <br>" . $connect->error;
+        
     }
     mysqli_close($connect);
 } else {
@@ -54,7 +52,7 @@ if ($_POST) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Update</title>
+    <title>Order</title>
     <?php require_once '../../components/boot.php' ?>
 </head>
 
