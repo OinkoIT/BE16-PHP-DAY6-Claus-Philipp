@@ -13,33 +13,6 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
     exit;
 }
 
-// select logged-in users details - procedural style
-$res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['user']);
-$row = mysqli_fetch_array($res, MYSQLI_ASSOC);
-
-if (mysqli_num_rows($result) == 1) {
-    $data = mysqli_fetch_assoc($result);
-    $name = $data['name'];
-    $price = $data['price'];
-    $picture = $data['picture'];
-    $supplier = $data['fk_supplierId'];
-    $resultSup = mysqli_query($connect, "SELECT * FROM suppliers");
-    $supList = "";
-    if (mysqli_num_rows($resultSup) > 0) {
-        while ($row = $resultSup->fetch_array(MYSQLI_ASSOC)) {
-            if ($row['supplierId'] == $supplier) {
-                $supList .= "<option selected value='{$row['supplierId']}'>{$row['sup_name']}</option>";
-            } else {
-                $supList .= "<option value='{$row['supplierId']}'>{$row['sup_name']}</option>";
-            }
-        }
-    } else {
-        $supList = "<li>There are no suppliers registered</li>";
-    }
-} else {
-    header("location: error.php");
-}
-
 
 
 $sql = "SELECT * FROM products";
