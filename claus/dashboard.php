@@ -117,9 +117,9 @@ mysqli_close($connect);
 
     <div class="container">
 
-        <div class="row row-cols-2">
+        <div class="row gap-2">
 
-            <div class="col-3">
+            <div class="col col-md-12 col-lg-3">
                 <div class="card shadow" style="width: 18rem;">
                     <img src="pictures/<?php echo $adminpic; ?>" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -132,11 +132,11 @@ mysqli_close($connect);
                 </div>
             </div>
 
-            <div class="col-9">
+            <div class="col col-md-12 col-lg-8">
 
-                <div class="row row-cols-1">
+                <div class="row">
 
-                    <div class="col-8 mb-5">
+                    <div class="col col-md-12 col-lg-12 mb-5">
                         <p class='h2'>🙋 Users</p>
                         <table class='table table-striped shadow'>
                             <thead class='table-success'>
@@ -154,7 +154,7 @@ mysqli_close($connect);
                         </table>
                     </div>
 
-                    <div class="col-8">
+                    <div class="col col-md-12 col-lg-12 mb-5">
                         <div class="manageProduct w-75 ">
 
                             <p class='h2'>🌮 Dishes</p>

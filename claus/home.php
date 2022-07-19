@@ -31,7 +31,7 @@ if (mysqli_num_rows($result)  > 0) {
             <td><img class='img-thumbnail' src='pictures/" . $row['picture'] . "'</td>
             <td>" . $row['name'] . "</td>
             <td>" . $row['price'] . "</td>
-            <td><a href='products/update.php?id=" . $row['id'] . "'><button class='btn btn-success btn-sm' type='button'>Order</button></a>
+            <td><a href='products/update.php?id=" . $row['id'] . "'><button class='btn btn-success btn-sm' action='actions/a_create.php' method='post' type='submit'>Order</button></a>
             </td>
             </tr>";
     };
