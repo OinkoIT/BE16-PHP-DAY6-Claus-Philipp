@@ -27,12 +27,12 @@ $bbody = '';
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
         $tbody .= "<tr>
-            <td><img class='img-thumbnail rounded-circle' src='pictures/" . $row['picture'] . "' alt=" . $row['first_name'] . "></td>
+            <td><img class='img-thumbnail rounded-circle shadow' src='pictures/" . $row['picture'] . "' alt=" . $row['first_name'] . "></td>
             <td>" . $row['first_name'] . " " . $row['last_name'] . "</td>
             <td>" . $row['date_of_birth'] . "</td>
             <td>" . $row['email'] . "</td>
             <td><a href='update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
-            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm' type='button'>Delete</button></a></td>
+            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm m-1' type='button'>Delete</button></a></td>
          </tr>";
     }
 } else {
@@ -52,11 +52,11 @@ $cbody = ''; //this variable will hold the body for the table
 if (mysqli_num_rows($result3)  > 0) {
     while ($row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC)) {
         $cbody .= "<tr>
-            <td><img class='img-thumbnail' src='pictures/" . $row3['picture'] . "'</td>
+            <td><img class='img-thumbnail shadow' src='pictures/" . $row3['picture'] . "'</td>
             <td>" . $row3['name'] . "</td>
             <td>" . $row3['price'] . "</td>
-            <td><a href='update.php?id=" . $row3['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
-            <a href='delete.php?id=" . $row3['id'] . "'><button class='btn btn-danger btn-sm' type='button'>Delete</button></a></td>
+            <td><a href='products/update.php?id=" . $row3['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
+            <a href='delete.php?id=" . $row3['id'] . "'><button class='btn btn-danger btn-sm m-1' type='button'>Delete</button></a></td>
             </tr>";
     };
 } else {
@@ -114,66 +114,70 @@ mysqli_close($connect);
             </div>
         </div>
     </nav>
-    <div class="container">
-        <div class="row row-cols-2">
-            <div class="col-3">
 
+    <div class="container">
+
+        <div class="row row-cols-2">
+
+            <div class="col-3">
                 <div class="card shadow" style="width: 18rem;">
                     <img src="pictures/<?php echo $adminpic; ?>" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Hi <?php echo $adminname ?></h5>
-                        <p class="card-text">Welcome to Ristaurante. Here you can order dishes from a great variety of restaurants in you area!</p>
-                        <a href="update.php?id=<?php echo $_SESSION['adm'] ?>" class="btn btn-primary">EDIT PROFILE</a>
+                        <h5 class="card-title">🔑 Hi <?php echo $adminname ?></h5>
+                        <p class="card-text">Welcome to the Admin Dashboard. Her you got all the controls you need.</p>
+                        <a href="update.php?id=<?php echo $_SESSION['adm'] ?>" class="btn btn-primary">Edit Profile</a>
                         <a class="btn btn-success m-1" href="products/index.php">Products</a>
                         <a class="btn btn-danger" href="logout.php?logout">Sign Out</a>
                     </div>
                 </div>
             </div>
-            </div>
-    <div class="container">
-        <div class="row">
-            
-            <div class="col-8 mt-2">
-                <p class='h2'>Users</p>
 
-                <table class='table table-striped'>
-                    <thead class='table-success'>
-                        <tr>
-                            <th>Picture</th>
-                            <th>Name</th>
-                            <th>Date of birth</th>
-                            <th>Email</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?= $tbody ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+            <div class="col-9">
 
-    <div class="container">
-        <div class="manageProduct w-75 mt-3">
-            <div class='mb-3'>
-                <a href="create.php"><button class='btn btn-primary' type="button">Add product</button></a>
-                <a href="../dashboard.php"><button class='btn btn-success' type="button">Dashboard</button></a>
+                <div class="row row-cols-1">
+
+                    <div class="col-8 mb-5">
+                        <p class='h2'>🙋 Users</p>
+                        <table class='table table-striped shadow'>
+                            <thead class='table-success'>
+                                <tr>
+                                    <th>Picture</th>
+                                    <th>Name</th>
+                                    <th>Date of birth</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?= $tbody ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-8">
+                        <div class="manageProduct w-75 ">
+
+                            <p class='h2'>🌮 Dishes</p>
+                            <table class='table table-striped shadow'>
+                                <thead class='table-success'>
+                                    <tr>
+                                        <th>Picture</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?= $cbody; ?>
+                                </tbody>
+                            </table>                            
+                            <div class='mb-3'>
+                                <a href="products/create.php"><button class='btn btn-success' type="button">Add product</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class='h2'>Products</p>
-            <table class='table table-striped'>
-                <thead class='table-success'>
-                    <tr>
-                        <th>Picture</th>
-                        <th>Name</th>
-                        <th>price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?= $cbody; ?>
-                </tbody>
-            </table>
         </div>
     </div>
 </body>

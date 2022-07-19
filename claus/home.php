@@ -31,7 +31,7 @@ if (mysqli_num_rows($result)  > 0) {
             <td><img class='img-thumbnail' src='pictures/" . $row['picture'] . "'</td>
             <td>" . $row['name'] . "</td>
             <td>" . $row['price'] . "</td>
-            <td><a href='products/update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm' type='button'>BUY</button></a>
+            <td><a href='products/update.php?id=" . $row['id'] . "'><button class='btn btn-success btn-sm' type='button'>Order</button></a>
             </td>
             </tr>";
     };
@@ -94,8 +94,8 @@ mysqli_close($connect);
                     <div class="card-body">
                         <h5 class="card-title">Hi <?php echo $adminname ?></h5>
                         <p class="card-text">Welcome to Ristaurante. Here you can order dishes from a great variety of restaurants in you area!</p>
-                        <a href="logout.php?logout" class="btn btn-primary M-1">SIGN OUT</a>
-                        <a href="update.php?id=<?php echo $_SESSION['user'] ?>" class="btn btn-primary">EDIT PROFILE</a>
+                        <a href="logout.php?logout" class="btn btn-primary M-1">Sign Out</a>
+                        <a href="update.php?id=<?php echo $_SESSION['user'] ?>" class="btn btn-primary">Edit Profile</a>
                     </div>
                 </div>
             </div>
