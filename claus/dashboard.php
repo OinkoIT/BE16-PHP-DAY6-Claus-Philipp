@@ -39,13 +39,28 @@ if ($result->num_rows > 0) {
     $tbody = "<tr><td colspan='5'><center>No Data Available </center></td></tr>";
 }
 
-if ($result2->num_rows > 0) {
-    while ($row = $result2->fetch_array(MYSQLI_ASSOC)) {
-        $abody = $row['picture'];
-        $bbody = $row['first_name'] . " " . $row['last_name'];
-    }
+
+$res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['adm']);
+$row2 = mysqli_fetch_array($res, MYSQLI_ASSOC);
+$adminpic = $row2['picture'];
+$adminname = $row2['first_name'];
+$adminlname = $row2['last_name'];
+
+$sql3 = "SELECT * FROM products";
+$result3 = mysqli_query($connect, $sql3);
+$cbody = ''; //this variable will hold the body for the table
+if (mysqli_num_rows($result3)  > 0) {
+    while ($row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC)) {
+        $cbody .= "<tr>
+            <td><img class='img-thumbnail' src='pictures/" . $row3['picture'] . "'</td>
+            <td>" . $row3['name'] . "</td>
+            <td>" . $row3['price'] . "</td>
+            <td><a href='update.php?id=" . $row3['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
+            <a href='delete.php?id=" . $row3['id'] . "'><button class='btn btn-danger btn-sm' type='button'>Delete</button></a></td>
+            </tr>";
+    };
 } else {
-    $abody = "<tr><td colspan='5'><center>No Data Available </center></td></tr>";
+    $cbody =  "<tr><td colspan='5'><center>No Data Available </center></td></tr>";
 }
 
 
@@ -83,14 +98,41 @@ mysqli_close($connect);
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg bg-light shadow mb-5">
+        <div class="container-fluid w-75">
+            <a class="navbar-brand" href="#">🍳 Ristaurante</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link text-primary" aria-current="page" href="#"><?php echo $adminname . " " . $adminlname ?></a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row row-cols-2">
+            <div class="col-3">
+
+                <div class="card shadow" style="width: 18rem;">
+                    <img src="pictures/<?php echo $adminpic; ?>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Hi <?php echo $adminname ?></h5>
+                        <p class="card-text">Welcome to Ristaurante. Here you can order dishes from a great variety of restaurants in you area!</p>
+                        <a href="update.php?id=<?php echo $_SESSION['adm'] ?>" class="btn btn-primary">EDIT PROFILE</a>
+                        <a class="btn btn-success m-1" href="products/index.php">Products</a>
+                        <a class="btn btn-danger" href="logout.php?logout">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+            </div>
     <div class="container">
         <div class="row">
-            <div class="col-2">
-                <img class="userImage shadow" src="pictures/<?php echo $abody ?>" alt="Adm avatar">
-                <p class="">Hello <?php echo $bbody ?></p>
-                <a class="btn btn-success" href="products/index.php">Products</a>
-                <a class="btn btn-danger" href="logout.php?logout">Sign Out</a>
-            </div>
+            
             <div class="col-8 mt-2">
                 <p class='h2'>Users</p>
 
@@ -111,5 +153,29 @@ mysqli_close($connect);
             </div>
         </div>
     </div>
+
+    <div class="container">
+        <div class="manageProduct w-75 mt-3">
+            <div class='mb-3'>
+                <a href="create.php"><button class='btn btn-primary' type="button">Add product</button></a>
+                <a href="../dashboard.php"><button class='btn btn-success' type="button">Dashboard</button></a>
+            </div>
+            <p class='h2'>Products</p>
+            <table class='table table-striped'>
+                <thead class='table-success'>
+                    <tr>
+                        <th>Picture</th>
+                        <th>Name</th>
+                        <th>price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?= $cbody; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
+
 </html>

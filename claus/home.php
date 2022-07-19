@@ -16,7 +16,9 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
 // select logged-in users details - procedural style
 $res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['user']);
 $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
-
+$adminpic = $row['picture'];
+$adminname = $row['first_name'];
+$adminlname = $row['last_name'];
 
 
 
@@ -26,11 +28,11 @@ $tbody = ''; //this variable will hold the body for the table
 if (mysqli_num_rows($result)  > 0) {
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         $tbody .= "<tr>
-            <td><img class='img-thumbnail' src='../pictures/" . $row['picture'] . "'</td>
+            <td><img class='img-thumbnail' src='pictures/" . $row['picture'] . "'</td>
             <td>" . $row['name'] . "</td>
             <td>" . $row['price'] . "</td>
-            <td><a href='update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
-            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm' type='button'>Delete</button></a></td>
+            <td><a href='products/update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm' type='button'>BUY</button></a>
+            </td>
             </tr>";
     };
 } else {
@@ -46,7 +48,7 @@ mysqli_close($connect);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - <?php echo $row['first_name']; ?></title>
+    <title>Welcome - <?php echo $adminname; ?></title>
     <?php require_once 'components/boot.php' ?>
     <style>
         .userImage {
@@ -58,40 +60,71 @@ mysqli_close($connect);
             background: rgb(2, 0, 36);
             background: linear-gradient(24deg, rgba(2, 0, 36, 1) 0%, rgba(0, 212, 255, 1) 100%);
         }
+
+        .img-thumbnail {
+            width: 70px !important;
+            height: 70px !important;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="hero">
-            <img class="userImage" src="pictures/<?php echo $row['picture']; ?>" alt="<?php echo $row['first_name']; ?>">
-            <p class="text-white">Hi <?php echo $row['first_name']; ?></p>
-        </div>
-        <a href="logout.php?logout">Sign Out</a>
-        <a href="update.php?id=<?php echo $_SESSION['user'] ?>">Update your profile</a>
-    </div>
-
-    <div class="container">
-        <div class="manageProduct w-75 mt-3">
-            <div class='mb-3'>
-                <a href="create.php"><button class='btn btn-primary' type="button">Add product</button></a>
-                <a href="../dashboard.php"><button class='btn btn-success' type="button">Dashboard</button></a>
+    <nav class="navbar navbar-expand-lg bg-light shadow mb-5">
+        <div class="container-fluid w-75">
+            <a class="navbar-brand" href="#">🍳 Ristaurante</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link text-primary" aria-current="page" href="#"><?php echo $adminname . " " . $adminlname ?></a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="#">Contact</a>
+                </div>
             </div>
-            <p class='h2'>Products</p>
-            <table class='table table-striped'>
-                <thead class='table-success'>
-                    <tr>
-                        <th>Picture</th>
-                        <th>Name</th>
-                        <th>price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?= $tbody; ?>
-                </tbody>
-            </table>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row row-cols-2">
+            <div class="col-3">
+
+                <div class="card shadow" style="width: 18rem;">
+                    <img src="pictures/<?php echo $adminpic; ?>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Hi <?php echo $adminname ?></h5>
+                        <p class="card-text">Welcome to Ristaurante. Here you can order dishes from a great variety of restaurants in you area!</p>
+                        <a href="logout.php?logout" class="btn btn-primary M-1">SIGN OUT</a>
+                        <a href="update.php?id=<?php echo $_SESSION['user'] ?>" class="btn btn-primary">EDIT PROFILE</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-8">
+                <div class="manageProduct w-75 mt-3">
+
+                    <p class='h2'>Products</p>
+                    <table class='table table-striped shadow'>
+                        <thead class='table-success'>
+                            <tr>
+                                <th>Picture</th>
+                                <th>Name</th>
+                                <th>price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?= $tbody; ?>
+                        </tbody>
+                    </table>
+                    <div class='mb-3'>
+                        <a href="products/create.php"><button class='btn btn-primary' type="button">Add product</button></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
+
 </html>
