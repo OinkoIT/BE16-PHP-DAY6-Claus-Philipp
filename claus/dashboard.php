@@ -125,7 +125,7 @@ mysqli_close($connect);
 
         <div class="row gap-2">
 
-            <div class="col col-md-12 col-lg-3">
+            <div class="col col-sm-12 col-md-12 col-lg-3">
                 <div class="card shadow" style="width: 18rem;">
                     <img src="pictures/<?php echo $adminpic; ?>" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -138,7 +138,7 @@ mysqli_close($connect);
                 </div>
             </div>
 
-            <div class="col col-md-12 col-lg-8">
+            <div class="col col-sm-12 col-md-12 col-lg-8">
 
                 <div class="row">
 

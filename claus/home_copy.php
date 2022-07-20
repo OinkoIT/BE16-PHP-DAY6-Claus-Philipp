@@ -28,16 +28,15 @@ $tbody = ''; //this variable will hold the body for the table
 $orderBtn = '';
 if (mysqli_num_rows($result)  > 0) {
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-        if ($row['available'] == 1) {
+        if ($row['available'] == 1){
             $available = "✅";
-            $orderBtn =
-                "<td class='text-center align-middle'><a href='products/actions/a_order.php?id=$row[id]' class='btn btn-success btn-sm shadow amatic' name='order' type='submit'>Order</a>
-            </td>";
-        } else {
+            $orderBtn =  "<td class='text-center'></td>";
+        }else{
             $available = "⛔️";
-            $orderBtn = "<td class='text-center'></td>";
-        }
-        $tbody .= "<tr>
+            $orderBtn =
+            "<td class='text-center align-middle'><a href='products/actions/a_order.php?id=$row[id]' class='btn btn-success btn-sm shadow amatic' name='order' type='submit'>Order</a>
+            </td>";        
+            $tbody .= "<tr>
             <td class='text-center align-middle'><img class='img-thumbnail' src='pictures/" . $row['picture'] . "'</td>
             <td class='text-center align-middle''>" . $row['name'] . "</td>
             <td class='text-center align-middle''>" . $row['price'] . "</td>
@@ -45,6 +44,8 @@ if (mysqli_num_rows($result)  > 0) {
             $orderBtn
             </td>
             </tr>";
+        }
+
     };
 } else {
     $tbody =  "<tr><td colspan='5'><center>No Data Available </center></td></tr>";
@@ -77,7 +78,6 @@ mysqli_close($connect);
             width: 70px !important;
             height: 70px !important;
         }
-
         .hero {
             background-image: url(https://images.unsplash.com/photo-1505935428862-770b6f24f629?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2334&q=80);
             background-size: cover;
