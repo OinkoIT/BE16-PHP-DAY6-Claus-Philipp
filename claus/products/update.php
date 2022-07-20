@@ -13,7 +13,7 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
 
 require_once '../components/db_connect.php';
 
-$result2 = mysqli_query($connect, "SELECT * FROM products");
+$result2 = mysqli_query($connect, "SELECT * FROM $tableProducts");
 $row2 = $result2->fetch_array(MYSQLI_ASSOC);
 $check = $row2['available'];
 $status = $row2['available'];

@@ -23,7 +23,7 @@ $userlname = $row['last_name'];
 
 if ($_GET) {
     $product = $_GET['id'];
-    $res2 = mysqli_query($connect, "SELECT * FROM $tableProducts WHERE id= $product" );
+    $res2 = mysqli_query($connect, "SELECT * FROM $tableProducts WHERE id= $product");
     $row2 = mysqli_fetch_array($res2, MYSQLI_ASSOC);
     $productName = $row2['name'];
     $sql = "INSERT INTO `order`(`fk_user_id`, `fk_product_id`, `fk_product_name`, `fk_user_fname`, `fk_user_lname`) VALUES ('$user','$product', '$productName', '$userfname', '$userlname')";
@@ -36,17 +36,17 @@ if ($_GET) {
         $prodpic = $row2['picture'];
         $class = "success amatic-xs";
         $message = "We received your Order! <br>
-            <table class='table w-50'><tr>
-            <td> Client: $userfname </td>
-            <td> 
-            Item ordered: $prodname 
-            <img class='img-thumbnail rounded-circle shadow' src='../../pictures/<?php echo $prodpic ?>' alt='itempic'>
-            </td>
+            <table class='table w-50'>
+            <tr>
+                <td class=' align-middle'> Client: $userfname </td>
+                <td class=' align-middle'> 
+                    Item ordered: $prodname 
+                    <img class='img-thumbnail rounded-circle shadow' src='../../pictures/$prodpic' alt='itempic'>
+                </td>
             </tr></table><hr>";
     } else {
         $class = "danger amatic-xs";
         $message = "Error while ordering. Try again: <br>" . $connect->error;
-        
     }
     mysqli_close($connect);
 } else {
@@ -75,8 +75,9 @@ if ($_GET) {
         }
 
         .img-thumbnail {
-            width: 70px !important;
-            height: 70px !important;
+            width: 150px !important;
+            height: 150px !important;
+            
         }
 
         .hero {
@@ -96,25 +97,30 @@ if ($_GET) {
             /* box-shadow: 0px 0px 10px black; */
             /* border-radius: 5px; */
         }
-        .amatic{
-        font-family: 'Amatic SC', cursive;
-        font-size: 1.5em;
+
+        .amatic {
+            font-family: 'Amatic SC', cursive;
+            font-size: 1.5em;
         }
-        .amatic-xs{
-        font-family: 'Amatic SC', cursive;
-        font-size: 1.5em;
+
+        .amatic-xs {
+            font-family: 'Amatic SC', cursive;
+            font-size: 1.5em;
         }
-        .peg{
-        font-family: 'Square Peg', cursive;
-        font-size: 5em;
+
+        .peg {
+            font-family: 'Square Peg', cursive;
+            font-size: 5em;
         }
-        .peg-sm{
-        font-family: 'Square Peg', cursive;
-        font-size: 3em;
+
+        .peg-sm {
+            font-family: 'Square Peg', cursive;
+            font-size: 3em;
         }
-        .peg-xs{
-        font-family: 'Square Peg', cursive;
-        font-size: 2em;
+
+        .peg-xs {
+            font-family: 'Square Peg', cursive;
+            font-size: 2em;
         }
     </style>
 </head>
@@ -131,4 +137,5 @@ if ($_GET) {
         </div>
     </div>
 </body>
+
 </html>

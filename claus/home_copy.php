@@ -38,9 +38,9 @@ if (mysqli_num_rows($result)  > 0) {
             </td>";        
             $tbody .= "<tr>
             <td class='text-center align-middle'><img class='img-thumbnail' src='pictures/" . $row['picture'] . "'</td>
-            <td class='text-center align-middle''>" . $row['name'] . "</td>
-            <td class='text-center align-middle''>" . $row['price'] . "</td>
-            <td class='text-center align-middle''>" . $available . "</td>
+            <td class='text-center align-middle'>" . $row['name'] . "</td>
+            <td class='text-center align-middle'>" . $row['price'] . "</td>
+            <td class='text-center align-middle'>" . $available . "</td>
             $orderBtn
             </td>
             </tr>";
