@@ -33,11 +33,15 @@ if ($_GET) {
     if (mysqli_query($connect, $sql) === true) {
         $row2 = mysqli_fetch_array($sql2, MYSQLI_ASSOC);
         $prodname = $row2['name'];
+        $prodpic = $row2['picture'];
         $class = "success amatic-xs";
         $message = "We received your Order! <br>
             <table class='table w-50'><tr>
             <td> Client: $userfname </td>
-            <td> Item ordered: $prodname </td>
+            <td> 
+            Item ordered: $prodname 
+            <img class='img-thumbnail rounded-circle shadow' src='../../pictures/<?php echo $prodpic ?>' alt='itempic'>
+            </td>
             </tr></table><hr>";
     } else {
         $class = "danger amatic-xs";
