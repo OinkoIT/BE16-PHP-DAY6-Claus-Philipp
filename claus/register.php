@@ -61,7 +61,7 @@ if (isset($_POST['btn-signup'])) {
         $emailError = "Please enter valid email address.";
     } else {
         // checks whether the email exists or not
-        $query = "SELECT email FROM users WHERE email='$email'";
+        $query = "SELECT email FROM $tableUser WHERE email='$email'";
         $result = mysqli_query($connect, $query);
         $count = mysqli_num_rows($result);
         if ($count != 0) {
@@ -88,7 +88,7 @@ if (isset($_POST['btn-signup'])) {
     // if there's no error, continue to signup
     if (!$error) {
 
-        $query = "INSERT INTO users(first_name, last_name, password, date_of_birth, email, picture)
+        $query = "INSERT INTO $tableUser(first_name, last_name, password, date_of_birth, email, picture)
                   VALUES('$fname', '$lname', '$password', '$date_of_birth', '$email', '$picture->fileName')";
         $res = mysqli_query($connect, $query);
 

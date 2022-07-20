@@ -12,17 +12,23 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
     exit;
 }
 
-$sql = "SELECT * FROM products";
+$sql = "SELECT * FROM $tableProducts";
 $result = mysqli_query($connect, $sql);
 $tbody = ''; //this variable will hold the body for the table
 if (mysqli_num_rows($result)  > 0) {
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        if ($row['available'] == 1){
+            $available = "✅";
+        }else{
+            $available = "⛔️";
+        }
         $tbody .= "<tr>
-            <td><img class='img-thumbnail' src='../pictures/" . $row['picture'] . "'</td>
-            <td>" . $row['name'] . "</td>
-            <td>" . $row['price'] . "</td>
-            <td><a href='update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
-            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm' type='button'>Delete</button></a></td>
+            <td class='text-center'><img class='img-thumbnail shadow' src='../pictures/" . $row['picture'] . "'</td>
+            <td class='text-center'>" . $row['name'] . "</td>
+            <td class='text-center'>" . $row['price'] . "</td>
+            <td class='text-center'>" . $available . "</td>
+            <td class='text-center'><a href='update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm shadow' type='button'>Edit</button></a>
+            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm shadow' type='button'>Delete</button></a></td>
             </tr>";
     };
 } else {
@@ -38,7 +44,7 @@ mysqli_close($connect);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHP CRUD</title>
+    <title>Products</title>
     <?php require_once '../components/boot.php' ?>
     <style type="text/css">
         .manageProduct {
@@ -64,17 +70,18 @@ mysqli_close($connect);
 <body>
     <div class="manageProduct w-75 mt-3">
         <div class='mb-3'>
-            <a href="create.php"><button class='btn btn-primary' type="button">Add product</button></a>
-            <a href="../dashboard.php"><button class='btn btn-success' type="button">Dashboard</button></a>
+            <a href="create.php"><button class='btn btn-primary shadow' type="button">Add product</button></a>
+            <a href="../dashboard.php"><button class='btn btn-success shadow' type="button">Dashboard</button></a>
         </div>
         <p class='h2'>Products</p>
-        <table class='table table-striped'>
+        <table class='table table-striped shadow'>
             <thead class='table-success'>
                 <tr>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>price</th>
-                    <th>Action</th>
+                    <th class='text-center'>Picture</th>
+                    <th class='text-center'>Name</th>
+                    <th class='text-center'>Price</th>
+                    <th class='text-center'>Status</th>
+                    <th class='text-center'>Action</th>
                 </tr>
             </thead>
             <tbody>

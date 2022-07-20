@@ -5,6 +5,11 @@ $username = "root";
 $password = "";
 $dbname = "crud_with_login";
 
+$tableUser = "users";
+$tableProducts = "products";
+$tableMany = "order";
+$tableSupplier = "suppliers";
+
 // create connection
 $connect = new  mysqli($localhost, $username, $password, $dbname);
 
@@ -14,3 +19,5 @@ if ($connect->connect_error) {
 // } else {
 //     echo "Successfully Connected";
 }
+
+

@@ -14,7 +14,7 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
 }
 
 // select logged-in users details - procedural style
-$res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['user']);
+$res = mysqli_query($connect, "SELECT * FROM $tableUser WHERE id=" . $_SESSION['user']);
 $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
 $adminpic = $row['picture'];
 $adminname = $row['first_name'];
@@ -22,16 +22,27 @@ $adminlname = $row['last_name'];
 
 
 
-$sql = "SELECT * FROM products";
+$sql = "SELECT * FROM $tableProducts";
 $result = mysqli_query($connect, $sql);
 $tbody = ''; //this variable will hold the body for the table
+$orderBtn = '';
 if (mysqli_num_rows($result)  > 0) {
     while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        if ($row['available'] == 1){
+            $available = "✅";
+            $orderBtn = 
+            "<td class='text-center align-middle'><a href='products/actions/a_order.php?id=$row[id]' class='btn btn-success btn-sm shadow' name='order' type='submit'>Order</a>
+            </td>";
+        }else{
+            $available = "⛔️";
+            $orderBtn = "<td class='text-center'></td>";
+        }
         $tbody .= "<tr>
-            <td><img class='img-thumbnail' src='pictures/" . $row['picture'] . "'</td>
-            <td>" . $row['name'] . "</td>
-            <td>" . $row['price'] . "</td>
-            <td><a href='products/actions/a_order.php?id=$row[id]' class='btn btn-success btn-sm' name='order' type='submit'>Order</a>
+            <td class='text-center align-middle'><img class='img-thumbnail' src='pictures/" . $row['picture'] . "'</td>
+            <td class='text-center align-middle''>" . $row['name'] . "</td>
+            <td class='text-center align-middle''>" . $row['price'] . "</td>
+            <td class='text-center align-middle''>" . $available . "</td>
+            $orderBtn
             </td>
             </tr>";
     };
@@ -94,24 +105,25 @@ mysqli_close($connect);
                     <div class="card-body">
                         <h5 class="card-title">Hi <?php echo $adminname ?></h5>
                         <p class="card-text">Welcome to Ristaurante. Here you can order dishes from a great variety of restaurants in you area!</p>
-                        <a href="logout.php?logout" class="btn btn-primary M-1">Sign Out</a>
-                        <a href="update.php?id=<?php echo $_SESSION['user'] ?>" class="btn btn-primary">Edit Profile</a>
+                        <a href="logout.php?logout" class="btn btn-primary m-1 shadow">Sign Out</a>
+                        <a href="update.php?id=<?php echo $_SESSION['user'] ?>" class="btn btn-primary shadow">Edit Profile</a>
                     </div>
                 </div>
             </div>
 
 
             <div class="col-8">
-                <div class="manageProduct w-75 mt-3">
+                <div class="manageProduct w-75">
 
                     <p class='h2'>Products</p>
                     <table class='table table-striped shadow'>
                         <thead class='table-success'>
                             <tr>
-                                <th>Picture</th>
-                                <th>Name</th>
-                                <th>price</th>
-                                <th>Action</th>
+                                <th class='text-center'>Picture</th>
+                                <th class='text-center'>Name</th>
+                                <th class='text-center'>Price</th>
+                                <th class='text-center'>Status</th>
+                                <th class='text-center'>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -119,7 +131,7 @@ mysqli_close($connect);
                         </tbody>
                     </table>
                     <div class='mb-3'>
-                        <a href="products/create.php"><button class='btn btn-primary' type="button">Add product</button></a>
+                        <a href="products/create.php"><button class='btn btn-primary shadow' type="button">Add product</button></a>
                     </div>
                 </div>
             </div>

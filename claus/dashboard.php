@@ -14,8 +14,8 @@ if (isset($_SESSION["user"])) {
 
 $id = $_SESSION['adm'];
 $status = 'adm';
-$sql = "SELECT * FROM users WHERE status != '$status'";
-$sql2 = "SELECT * FROM users WHERE status = '$status'";
+$sql = "SELECT * FROM $tableUser WHERE status != '$status'";
+$sql2 = "SELECT * FROM $tableUser WHERE status = '$status'";
 $result = mysqli_query($connect, $sql);
 $result2 = mysqli_query($connect, $sql2);
 
@@ -27,12 +27,12 @@ $bbody = '';
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
         $tbody .= "<tr>
-            <td><img class='img-thumbnail rounded-circle shadow' src='pictures/" . $row['picture'] . "' alt=" . $row['first_name'] . "></td>
-            <td>" . $row['first_name'] . " " . $row['last_name'] . "</td>
-            <td>" . $row['date_of_birth'] . "</td>
-            <td>" . $row['email'] . "</td>
-            <td><a href='update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
-            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm m-1' type='button'>Delete</button></a></td>
+            <td class='text-center align-middle'><img class='img-thumbnail rounded-circle shadow' src='pictures/" . $row['picture'] . "' alt=" . $row['first_name'] . "></td>
+            <td class='text-center align-middle'>" . $row['first_name'] . " " . $row['last_name'] . "</td>
+            <td class='text-center align-middle'>" . $row['date_of_birth'] . "</td>
+            <td class='text-center align-middle'>" . $row['email'] . "</td>
+            <td class='text-center align-middle'><a href='update.php?id=" . $row['id'] . "'><button class='btn btn-primary btn-sm shadow' type='button'>Edit</button></a>
+            <a href='delete.php?id=" . $row['id'] . "'><button class='btn btn-danger btn-sm m-1 shadow' type='button'>Delete</button></a></td>
          </tr>";
     }
 } else {
@@ -40,23 +40,29 @@ if ($result->num_rows > 0) {
 }
 
 
-$res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['adm']);
+$res = mysqli_query($connect, "SELECT * FROM $tableUser WHERE id=" . $_SESSION['adm']);
 $row2 = mysqli_fetch_array($res, MYSQLI_ASSOC);
 $adminpic = $row2['picture'];
 $adminname = $row2['first_name'];
 $adminlname = $row2['last_name'];
 
-$sql3 = "SELECT * FROM products";
+$sql3 = "SELECT * FROM $tableProducts";
 $result3 = mysqli_query($connect, $sql3);
 $cbody = ''; //this variable will hold the body for the table
 if (mysqli_num_rows($result3)  > 0) {
     while ($row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC)) {
+        if ($row3['available'] == 1) {
+            $available = "✅";
+        } else {
+            $available = "⛔️";
+        }
         $cbody .= "<tr>
-            <td><img class='img-thumbnail shadow' src='pictures/" . $row3['picture'] . "'</td>
-            <td>" . $row3['name'] . "</td>
-            <td>" . $row3['price'] . "</td>
-            <td><a href='products/update.php?id=" . $row3['id'] . "'><button class='btn btn-primary btn-sm' type='button'>Edit</button></a>
-            <a href='delete.php?id=" . $row3['id'] . "'><button class='btn btn-danger btn-sm m-1' type='button'>Delete</button></a></td>
+            <td class='text-center align-middle'><img class='img-thumbnail shadow' src='pictures/" . $row3['picture'] . "'</td>
+            <td class='text-center align-middle'>" . $row3['name'] . "</td>
+            <td class='text-center align-middle align-middle'>" . $row3['price'] . "</td>
+            <td class='text-center'>" . $available . "</td>
+            <td class='text-center align-middle'><a href='products/update.php?id=" . $row3['id'] . "'><button class='btn btn-primary btn-sm' type='button shadow'>Edit</button></a>
+            <a href='delete.php?id=" . $row3['id'] . "'><button class='btn btn-danger btn-sm m-1 shadow' type='button'>Delete</button></a></td>
             </tr>";
     };
 } else {
@@ -124,10 +130,10 @@ mysqli_close($connect);
                     <img src="pictures/<?php echo $adminpic; ?>" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">🔑 Hi <?php echo $adminname ?></h5>
-                        <p class="card-text">Welcome to the Admin Dashboard. Her you got all the controls you need.</p>
-                        <a href="update.php?id=<?php echo $_SESSION['adm'] ?>" class="btn btn-primary">Edit Profile</a>
-                        <a class="btn btn-success m-1" href="products/index.php">Products</a>
-                        <a class="btn btn-danger" href="logout.php?logout">Sign Out</a>
+                        <p class="card-text">Welcome to the Admin Dashboard. Here you got all the controls you need.</p>
+                        <a href="update.php?id=<?php echo $_SESSION['adm'] ?>" class="btn btn-primary shadow">Edit Profile</a>
+                        <a class="btn btn-success m-1 shadow" href="products/index.php">Products</a>
+                        <a class="btn btn-danger shadow" href="logout.php?logout">Sign Out</a>
                     </div>
                 </div>
             </div>
@@ -141,11 +147,11 @@ mysqli_close($connect);
                         <table class='table table-striped shadow'>
                             <thead class='table-success'>
                                 <tr>
-                                    <th>Picture</th>
-                                    <th>Name</th>
-                                    <th>Date of birth</th>
-                                    <th>Email</th>
-                                    <th>Action</th>
+                                    <th class='text-center'>Picture</th>
+                                    <th class='text-center'>Name</th>
+                                    <th class='text-center'>Date of birth</th>
+                                    <th class='text-center'>Email</th>
+                                    <th class='text-center'>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,18 +167,19 @@ mysqli_close($connect);
                             <table class='table table-striped shadow'>
                                 <thead class='table-success'>
                                     <tr>
-                                        <th>Picture</th>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Action</th>
+                                        <th class='text-center'>Picture</th>
+                                        <th class='text-center'>Name</th>
+                                        <th class='text-center'>Price</th>
+                                        <th class='text-center'>Status</th>
+                                        <th class='text-center'>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?= $cbody; ?>
                                 </tbody>
-                            </table>                            
+                            </table>
                             <div class='mb-3'>
-                                <a href="products/create.php"><button class='btn btn-success' type="button">Add product</button></a>
+                                <a href="products/create.php"><button class='btn btn-success shadow' type="button">Add product</button></a>
                             </div>
                         </div>
                     </div>

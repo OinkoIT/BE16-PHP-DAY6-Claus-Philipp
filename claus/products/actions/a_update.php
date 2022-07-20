@@ -21,15 +21,16 @@ if ($_POST) {
     $price = $_POST['price'];
     $supplier = $_POST['supplier'];
     $id = $_POST['id'];
+    $available = $_POST['available'];
     //variable for upload pictures errors is initialised
     $uploadError = '';
 
     $picture = file_upload($_FILES['picture'], 'product'); //file_upload() called  
     if ($picture->error === 0) {
         ($_POST["picture"] == "product.png") ?: unlink("../../pictures/$_POST[picture]");
-        $sql = "UPDATE products SET name = '$name', price = $price, picture = '$picture->fileName', fk_supplierId = $supplier WHERE id = {$id}";
+        $sql = "UPDATE $tableProducts SET name = '$name', price = $price, picture = '$picture->fileName', available = $available, fk_supplierId = $supplier WHERE id = {$id}";
     } else {
-        $sql = "UPDATE products SET name = '$name', price = $price, fk_supplierId = $supplier WHERE id = {$id}";
+        $sql = "UPDATE $tableProducts SET name = '$name', price = $price,  available = $available, fk_supplierId = $supplier WHERE id = {$id}";
     }
     if (mysqli_query($connect, $sql) === TRUE) {
         $class = "success";

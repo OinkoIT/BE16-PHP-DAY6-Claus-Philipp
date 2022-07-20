@@ -43,7 +43,7 @@ if (isset($_POST['btn-login'])) {
 
         $password = hash('sha256', $pass); // password hashing hash('sha256', $pass)
 
-        $sql = "SELECT id, first_name, password, status FROM users WHERE email = '$email'";
+        $sql = "SELECT id, first_name, password, status FROM $tableUser WHERE email = '$email'";
         $result = mysqli_query($connect, $sql);
         $row = mysqli_fetch_assoc($result);
         $count = mysqli_num_rows($result);

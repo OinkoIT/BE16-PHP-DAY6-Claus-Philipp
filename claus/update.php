@@ -21,7 +21,7 @@ if (isset($_SESSION["adm"])) {
 //fetch and populate form
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $sql = "SELECT * FROM users WHERE id = {$id}";
+    $sql = "SELECT * FROM $tableUser WHERE id = {$id}";
     $result = mysqli_query($connect, $sql);
     if (mysqli_num_rows($result) == 1) {
         $data = mysqli_fetch_assoc($result);
@@ -47,9 +47,9 @@ if (isset($_POST["submit"])) {
     $picture = $pictureArray->fileName;
     if ($pictureArray->error === 0) {
         ($_POST["picture"] == "avatar.png") ?: unlink("pictures/{$_POST["picture"]}");
-        $sql = "UPDATE users SET first_name = '$f_name', last_name = '$l_name', email = '$email', date_of_birth = '$date_of_birth', picture = '$pictureArray->fileName' WHERE id = {$id}";
+        $sql = "UPDATE $tableUser SET first_name = '$f_name', last_name = '$l_name', email = '$email', date_of_birth = '$date_of_birth', picture = '$pictureArray->fileName' WHERE id = {$id}";
     } else {
-        $sql = "UPDATE users SET first_name = '$f_name', last_name = '$l_name', email = '$email', date_of_birth = '$date_of_birth' WHERE id = {$id}";
+        $sql = "UPDATE $tableUser SET first_name = '$f_name', last_name = '$l_name', email = '$email', date_of_birth = '$date_of_birth' WHERE id = {$id}";
     }
     if (mysqli_query($connect, $sql) === true) {
         $class = "alert alert-success";
@@ -83,8 +83,8 @@ mysqli_close($connect);
         }
 
         .img-thumbnail {
-            width: 70px !important;
-            height: 70px !important;
+            width: 150px !important;
+            height: 150px !important;
         }
     </style>
 </head>
@@ -96,7 +96,7 @@ mysqli_close($connect);
             <p><?php echo ($uploadError) ?? ''; ?></p>
         </div>
         <h2>Update</h2>
-        <img class='img-thumbnail rounded-circle' src='pictures/<?php echo $data['picture'] ?>' alt="<?php echo $f_name ?>">
+        <img class='img-thumbnail rounded-circle shadow' src='pictures/<?php echo $data['picture'] ?>' alt="<?php echo $f_name ?>">
         <form method="post" enctype="multipart/form-data">
             <table class="table">
                 <tr>
@@ -122,8 +122,8 @@ mysqli_close($connect);
                 <tr>
                     <input type="hidden" name="id" value="<?php echo $data['id'] ?>" />
                     <input type="hidden" name="picture" value="<?php echo $picture ?>" />
-                    <td><button name="submit" class="btn btn-success" type="submit">Save Changes</button></td>
-                    <td><a href="<?php echo $backBtn ?>"><button class="btn btn-warning" type="button">Back</button></a></td>
+                    <td><button name="submit" class="btn btn-success shadow" type="submit">Save Changes</button></td>
+                    <td><a href="<?php echo $backBtn ?>"><button class="btn btn-warning shadow" type="button">Back</button></a></td>
                 </tr>
             </table>
         </form>

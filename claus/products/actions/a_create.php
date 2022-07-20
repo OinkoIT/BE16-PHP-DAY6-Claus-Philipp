@@ -18,15 +18,16 @@ if ($_POST) {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $supplier = $_POST['supplier'];
+    $available = $_POST['available'];
     $uploadError = '';
     //this function exists in the service file upload.
     $picture = file_upload($_FILES['picture'], 'product');
 
     if ($supplier == 'none') {
         //checks if the supplier is undefined and insert null in the DB
-        $sql = "INSERT INTO products (name, price, picture, fk_supplierId) VALUES ('$name', $price, '$picture->fileName', null)";
+        $sql = "INSERT INTO $tableProducts (name, price, picture, available, fk_supplierId) VALUES ('$name', $price, '$picture->fileName', $available, null)";
     } else {
-        $sql = "INSERT INTO products (name, price, picture, fk_supplierId) VALUES ('$name', $price, '$picture->fileName', $supplier)";
+        $sql = "INSERT INTO $tableProducts (name, price, picture, available, fk_supplierId) VALUES ('$name', $price, '$picture->fileName', $available, $supplier)";
     }
 
     if (mysqli_query($connect, $sql) === true) {

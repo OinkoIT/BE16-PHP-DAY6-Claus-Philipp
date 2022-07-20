@@ -14,16 +14,20 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
 require_once '../../components/db_connect.php';
 require_once '../../components/file_upload.php';
 
-$res = mysqli_query($connect, "SELECT * FROM users WHERE id=" . $_SESSION['user']);
+$res = mysqli_query($connect, "SELECT * FROM $tableUser WHERE id=" . $_SESSION['user']);
 $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
 $user = $row['id'];
-$username = $row['first_name'];
+$userfname = $row['first_name'];
+$userlname = $row['last_name'];
 
 
 if ($_GET) {
     $product = $_GET['id'];
-    $sql = "INSERT INTO `order`(`fk_user_id`, `fk_product_id`) VALUES ('$user','$product')";
-    $sql2 = mysqli_query($connect, "SELECT * FROM products WHERE id=$product");
+    $res2 = mysqli_query($connect, "SELECT * FROM $tableProducts WHERE id= $product" );
+    $row2 = mysqli_fetch_array($res2, MYSQLI_ASSOC);
+    $productName = $row2['name'];
+    $sql = "INSERT INTO `order`(`fk_user_id`, `fk_product_id`, `fk_product_name`, `fk_user_fname`, `fk_user_lname`) VALUES ('$user','$product', '$productName', '$userfname', '$userlname')";
+    $sql2 = mysqli_query($connect, "SELECT * FROM $tableProducts WHERE id=$product");
 
 
     if (mysqli_query($connect, $sql) === true) {
@@ -32,7 +36,7 @@ if ($_GET) {
         $class = "success";
         $message = "Your order has been placed <br>
             <table class='table w-50'><tr>
-            <td> User: $username </td>
+            <td> User: $userfname </td>
             <td> Dish: $prodname </td>
             </tr></table><hr>";
     } else {

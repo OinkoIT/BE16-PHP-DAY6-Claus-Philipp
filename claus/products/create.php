@@ -13,12 +13,30 @@ if (!isset($_SESSION['adm']) && !isset($_SESSION['user'])) {
 }
 
 $suppliers = "";
-$result = mysqli_query($connect, "SELECT * FROM suppliers");
+$available = "";
+$result = mysqli_query($connect, "SELECT * FROM $tableSupplier");
+$result2 = mysqli_query($connect, "SELECT * FROM $tableProducts");
 
 while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
     $suppliers .=
         "<option value='{$row['supplierId']}'>{$row['sup_name']}</option>";
 }
+
+
+
+// $row2 = $result2->fetch_array(MYSQLI_ASSOC);
+// $check = $row2['available'];
+// $status = $row2['available'];
+
+//     if($check == 1){
+//         $check = "Available";
+//     } else {
+//         $check = "Not Available";
+//     } 
+// $available .=
+//     "<option value='{$status}'>{$check}</option>";
+
+
 ?>
 
 <!DOCTYPE html>
@@ -65,8 +83,17 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                     </td>
                 </tr>
                 <tr>
-                    <td><button class='btn btn-success' type="submit">Insert Product</button></td>
-                    <td><a href="index.php"><button class='btn btn-warning' type="button">Home</button></a></td>
+                    <th>Availability</th>
+                    <td>
+                        <select class="form-select" name="available" aria-label="Default select example">
+                            <option selected value='1'>Available</option>
+                            <option value='0'>Not Available</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><button class='btn btn-success shadow' type="submit">Insert Product</button></td>
+                    <td><a href="index.php"><button class='btn btn-warning shadow' type="button">Home</button></a></td>
                 </tr>
             </table>
         </form>

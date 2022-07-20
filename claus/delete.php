@@ -15,7 +15,7 @@ $class = 'd-none';
 //the GET method will show the info from the user to be deleted
 if ($_GET['id']) {
     $id = $_GET['id'];
-    $sql = "SELECT * FROM users WHERE id = {$id}";
+    $sql = "SELECT * FROM $tableUser WHERE id = {$id}";
     $result = mysqli_query($connect, $sql);
     $data = mysqli_fetch_assoc($result);
     if (mysqli_num_rows($result) == 1) {
@@ -32,7 +32,7 @@ if ($_POST) {
     $picture = $_POST['picture'];
     ($picture == "avatar.png") ?: unlink("pictures/$picture");
 
-    $sql = "DELETE FROM users WHERE id = {$id}";
+    $sql = "DELETE FROM $tableUser WHERE id = {$id}";
     if ($connect->query($sql) === TRUE) {
         $class = "alert alert-success";
         $message = "Successfully Deleted!";
