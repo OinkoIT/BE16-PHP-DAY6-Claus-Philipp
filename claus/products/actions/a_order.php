@@ -33,14 +33,14 @@ if ($_GET) {
     if (mysqli_query($connect, $sql) === true) {
         $row2 = mysqli_fetch_array($sql2, MYSQLI_ASSOC);
         $prodname = $row2['name'];
-        $class = "success";
-        $message = "Your order has been placed <br>
+        $class = "success amatic-xs";
+        $message = "We received your Order! <br>
             <table class='table w-50'><tr>
-            <td> User: $userfname </td>
-            <td> Dish: $prodname </td>
+            <td> Client: $userfname </td>
+            <td> Item ordered: $prodname </td>
             </tr></table><hr>";
     } else {
-        $class = "danger";
+        $class = "danger amatic-xs";
         $message = "Error while ordering. Try again: <br>" . $connect->error;
         
     }
@@ -57,18 +57,73 @@ if ($_GET) {
 <head>
     <meta charset="UTF-8">
     <title>Order</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Square+Peg&display=swap" rel="stylesheet">
     <?php require_once '../../components/boot.php' ?>
+    <style>
+        .userImage {
+            width: 200px;
+            height: 200px;
+        }
+
+        .hero {
+            background: rgb(2, 0, 36);
+            background: linear-gradient(24deg, rgba(2, 0, 36, 1) 0%, rgba(0, 212, 255, 1) 100%);
+        }
+
+        .img-thumbnail {
+            width: 70px !important;
+            height: 70px !important;
+        }
+
+        .hero {
+            background-image: url(https://images.unsplash.com/photo-1505935428862-770b6f24f629?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2334&q=80);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 400px;
+            box-shadow: inset 0px 0px 20px black;
+        }
+
+        .inside-hero {
+            position: relative;
+            top: 20%;
+            text-shadow: 1px 1px 2px black;
+            /* background-color: rgba(204, 202, 202, 0.448); */
+            /* box-shadow: 0px 0px 10px black; */
+            /* border-radius: 5px; */
+        }
+        .amatic{
+        font-family: 'Amatic SC', cursive;
+        font-size: 1.5em;
+        }
+        .amatic-xs{
+        font-family: 'Amatic SC', cursive;
+        font-size: 1.5em;
+        }
+        .peg{
+        font-family: 'Square Peg', cursive;
+        font-size: 5em;
+        }
+        .peg-sm{
+        font-family: 'Square Peg', cursive;
+        font-size: 3em;
+        }
+        .peg-xs{
+        font-family: 'Square Peg', cursive;
+        font-size: 2em;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="container w-75">
         <div class="mt-3 mb-3">
-            <h1>Create request response</h1>
+            <h1 class="peg">Your Order has been placed</h1>
         </div>
         <div class="alert alert-<?= $class; ?>" role="alert">
-            <p><?php echo ($message) ?? ''; ?></p>
-            <p><?php echo ($uploadError) ?? ''; ?></p>
-            <a href='../index.php'><button class="btn btn-primary" type='button'>Home</button></a>
+            <p class="amatic-xs"><?php echo ($message) ?? ''; ?></p>
+            <p class="amatic-xs"><?php echo ($uploadError) ?? ''; ?></p>
+            <a href='../index.php'><button class="btn btn-primary btn-sm amatic-xs" type='button'>Home</button></a>
         </div>
     </div>
 </body>
